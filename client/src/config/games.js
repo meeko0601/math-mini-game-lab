@@ -134,7 +134,7 @@ export const GAME_CONFIGS = [
       [CHARACTER_ASSETS.eclair, CHARACTER_ASSETS.mystique],
     ],
     images: {
-      card: IMAGE_ASSETS.effects.clueGem,
+      card: IMAGE_ASSETS.effects.success,
       prompt: IMAGE_ASSETS.effects.magnifier,
       item: null,
       success: IMAGE_ASSETS.effects.success,

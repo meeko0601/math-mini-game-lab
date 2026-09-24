@@ -119,6 +119,7 @@ test("画像素材は設定に集約され、3ゲームから差し替えられ�
     assert.equal(game.castCycle.length, 2);
     assert.equal(game.castCycle.every((cast) => cast.length === 2), true);
   }
+  assert.equal(GAME_CONFIGS[0].images.card.src, IMAGE_ASSETS.effects.success.src);
 
   assert.equal(Object.keys(CHARACTER_ASSETS).length, 4);
   for (const character of Object.values(CHARACTER_ASSETS)) {
@@ -177,4 +178,14 @@ test("はこんでみようはiPad Safari向けの画像表示とタッチ代替
   assert.match(styles, /\.move-item__visual\s*\{[\s\S]*?background-size: contain;/);
   assert.match(styles, /\.move-item__visual\s*\{[\s\S]*?background-position: center center;/);
   assert.match(styles, /-webkit-touch-callout: none;/);
+});
+
+test("ホームの全身4人と、みつける大きな表情画像の表示設定がある", () => {
+  const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+  const styles = readFileSync(resolve(projectRoot, "client/src/styles.css"), "utf8");
+
+  assert.match(styles, /\.home-cast\s*\{[\s\S]*?min-height: 420px;/);
+  assert.match(styles, /\.home-cast__portrait\s*\{[\s\S]*?height: clamp\(350px, 36vw, 450px\);/);
+  assert.match(styles, /\.target-shape\s*\{[\s\S]*?width: clamp\(88px, 14vw, 112px\);/);
+  assert.match(styles, /\.shape-button__visual\s*\{[\s\S]*?width: min\(92%, 144px\);/);
 });
