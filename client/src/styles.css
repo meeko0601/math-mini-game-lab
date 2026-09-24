@@ -536,19 +536,24 @@ button:active {
   font-size: clamp(37px, 7vw, 55px);
   cursor: grab;
   touch-action: none;
+  -webkit-touch-callout: none;
   user-select: none;
   -webkit-user-select: none;
 }
 
 .move-item__visual {
-  display: grid;
-  width: 82%;
-  height: 82%;
-  place-items: center;
-  object-fit: contain;
+  display: block;
+  width: 72px;
+  height: 72px;
+  max-width: 82%;
+  max-height: 82%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   font-size: inherit;
   line-height: 1;
   pointer-events: none;
+  -webkit-user-drag: none;
 }
 
 .move-item.is-dragging {

@@ -9,6 +9,18 @@ export function mountMoveGame({ stage, feedback, config, nextRound, soundEnabled
   const controller = createFeedbackController(feedback, config, nextRound, soundEnabled);
   let movedCount = 0;
 
+  function createMoveItemVisual(itemImage, fallbackText) {
+    if (!itemImage?.src) return visual(itemImage, fallbackText, "move-item__visual");
+
+    const itemVisual = el("span", {
+      className: "move-item__visual",
+      ariaLabel: itemImage.alt ?? "はこぶもの",
+      style: { backgroundImage: `url("${itemImage.src}")` },
+    });
+    itemVisual.setAttribute("role", "img");
+    return itemVisual;
+  }
+
   const source = el("div", { className: "move-source", ariaLabel: "はこぶもの" });
   const destinationCount = el("strong", { className: "destination-count", text: "0" });
   const destination = el("div", { className: "move-destination", ariaLabel: "ここへ はこす" }, [
@@ -38,19 +50,40 @@ export function mountMoveGame({ stage, feedback, config, nextRound, soundEnabled
     let startY = 0;
     let dragged = false;
     let suppressClick = false;
+    let activePointerId = null;
+
+    const finishPointer = (event) => {
+      if (activePointerId !== event.pointerId) return false;
+      try {
+        if (typeof item.hasPointerCapture === "function" && item.hasPointerCapture(event.pointerId)) {
+          item.releasePointerCapture(event.pointerId);
+        }
+      } catch {
+        // Safariで解除済みでも、このあとの判定を続けます。
+      }
+      activePointerId = null;
+      return true;
+    };
 
     item.addEventListener("pointerdown", (event) => {
       if (controller.isLocked()) return;
+      activePointerId = event.pointerId;
       startX = event.clientX;
       startY = event.clientY;
       dragged = false;
       suppressClick = false;
-      item.setPointerCapture(event.pointerId);
+      if (typeof item.setPointerCapture === "function") {
+        try {
+          item.setPointerCapture(event.pointerId);
+        } catch {
+          // SafariでPointer Captureが拒否されても、タップ操作は継続できます。
+        }
+      }
       item.classList.add("is-dragging");
     });
 
     item.addEventListener("pointermove", (event) => {
-      if (!item.hasPointerCapture(event.pointerId)) return;
+      if (activePointerId !== event.pointerId) return;
       const x = event.clientX - startX;
       const y = event.clientY - startY;
       dragged ||= Math.abs(x) + Math.abs(y) > 10;
@@ -58,8 +91,7 @@ export function mountMoveGame({ stage, feedback, config, nextRound, soundEnabled
     });
 
     item.addEventListener("pointerup", (event) => {
-      if (!item.hasPointerCapture(event.pointerId)) return;
-      item.releasePointerCapture(event.pointerId);
+      if (!finishPointer(event)) return;
       const destinationRect = destination.getBoundingClientRect();
       const droppedInside =
         event.clientX >= destinationRect.left &&
@@ -75,7 +107,8 @@ export function mountMoveGame({ stage, feedback, config, nextRound, soundEnabled
       else controller.retry("はこの なかまで はこんでみよう");
     });
 
-    item.addEventListener("pointercancel", () => {
+    item.addEventListener("pointercancel", (event) => {
+      if (!finishPointer(event)) return;
       suppressClick = dragged;
       item.classList.remove("is-dragging");
       item.style.removeProperty("transform");
@@ -96,7 +129,7 @@ export function mountMoveGame({ stage, feedback, config, nextRound, soundEnabled
       className: "move-item",
       type: "button",
       ariaLabel: `${question.itemLabel}を はこぶ`,
-    }, [visual(question.itemImage, question.item, "move-item__visual")]);
+    }, [createMoveItemVisual(question.itemImage, question.item)]);
     enablePointerDrag(item);
     source.append(item);
   }

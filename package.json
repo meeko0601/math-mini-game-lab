@@ -6,7 +6,7 @@
   "description": "4歳児と相談しながら育てる、算数ミニゲームの静的Web基盤",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node scripts/build-service-worker.mjs",
     "preview": "vite preview --host 0.0.0.0",
     "test": "node --test",
     "check": "pnpm test && pnpm build"

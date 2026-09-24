@@ -1,6 +1,8 @@
 export function registerPwa({ assetUrls = [], onReady, onError } = {}) {
   if (!import.meta.env.PROD || !("serviceWorker" in navigator)) return;
 
+  let lastWorker = null;
+
   const handleMessage = (event) => {
     if (event.data?.type === "OFFLINE_READY") onReady?.(event.data);
     if (event.data?.type === "OFFLINE_ERROR") {
@@ -8,6 +10,12 @@ export function registerPwa({ assetUrls = [], onReady, onError } = {}) {
     }
   };
   navigator.serviceWorker.addEventListener("message", handleMessage);
+
+  const prepareOfflineCache = (worker) => {
+    if (!worker || worker === lastWorker) return;
+    lastWorker = worker;
+    worker.postMessage({ type: "CACHE_URLS", urls: assetUrls });
+  };
 
   const start = async () => {
     try {
@@ -18,12 +26,17 @@ export function registerPwa({ assetUrls = [], onReady, onError } = {}) {
       const registration = await navigator.serviceWorker.ready;
       const worker = registration.active ?? registration.waiting ?? registration.installing;
       if (!worker) throw new Error("Service Worker is not available");
-      worker.postMessage({ type: "CACHE_URLS", urls: assetUrls });
+      prepareOfflineCache(worker);
     } catch (error) {
       onError?.(error);
     }
   };
 
-  if (document.readyState === "complete") start();
-  else window.addEventListener("load", start, { once: true });
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    lastWorker = null;
+    prepareOfflineCache(navigator.serviceWorker.controller);
+  });
+
+  // iPad Safariでも登録機会を逃さないよう、画像のload完了を待たずに開始します。
+  void start();
 }

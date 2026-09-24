@@ -122,9 +122,11 @@ test("画像素材は設定に集約され、3ゲームから差し替えられ�
 
 test("PWA設定と全ゲーム画像がオフライン利用向けに揃っている", () => {
   const publicRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../client/public");
+  const projectRoot = resolve(publicRoot, "../..");
   const manifest = JSON.parse(readFileSync(resolve(publicRoot, "manifest.json"), "utf8"));
   const serviceWorker = readFileSync(resolve(publicRoot, "sw.js"), "utf8");
   const indexHtml = readFileSync(resolve(publicRoot, "../index.html"), "utf8");
+  const packageJson = JSON.parse(readFileSync(resolve(projectRoot, "package.json"), "utf8"));
 
   assert.equal(manifest.display, "standalone");
   assert.equal(manifest.start_url, "./");
@@ -142,7 +144,26 @@ test("PWA設定と全ゲーム画像がオフライン利用向けに揃って�
   assert.match(serviceWorker, /addEventListener\("install"/);
   assert.match(serviceWorker, /addEventListener\("fetch"/);
   assert.match(serviceWorker, /OFFLINE_READY/);
+  assert.match(serviceWorker, /__PWA_PRECACHE_MANIFEST__/);
+  assert.match(serviceWorker, /request\.mode === "navigate"/);
+  assert.match(serviceWorker, /cache\.match\(scopedUrl\("\/index\.html"\)/);
+  assert.match(packageJson.scripts.build, /build-service-worker\.mjs/);
+  assert.equal(existsSync(resolve(projectRoot, "scripts/build-service-worker.mjs")), true);
+  assert.equal(existsSync(resolve(projectRoot, "vercel.json")), true);
   assert.match(indexHtml, /rel="manifest"/);
   assert.match(indexHtml, /apple-mobile-web-app-capable/);
   assert.doesNotMatch(indexHtml, /https?:\/\//);
+});
+
+test("はこんでみようはiPad Safari向けの画像表示とタッチ代替を備える", () => {
+  const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+  const moveGame = readFileSync(resolve(projectRoot, "client/src/games/moveGame.js"), "utf8");
+  const styles = readFileSync(resolve(projectRoot, "client/src/styles.css"), "utf8");
+
+  assert.match(moveGame, /backgroundImage/);
+  assert.match(moveGame, /activePointerId/);
+  assert.match(moveGame, /タップだけでも運べます/);
+  assert.match(styles, /\.move-item\s*\{[\s\S]*?touch-action: none;/);
+  assert.match(styles, /\.move-item__visual\s*\{[\s\S]*?background-size: contain;/);
+  assert.match(styles, /-webkit-touch-callout: none;/);
 });
