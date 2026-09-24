@@ -69,6 +69,13 @@ const gameItem = (id, label, itemImage, icon = "") => ({
   icon,
 });
 
+const EXPRESSION_LABELS = {
+  smile: "ほほえむ",
+  joy: "にっこり えがおの",
+  sad: "かなしい かおの",
+  thinking: "かんがえる",
+};
+
 /** 各ゲームで使う題材。並び順が、そのまま問題ごとの循環順になります。 */
 export const GAME_ITEM_ASSETS = {
   count: [
@@ -81,10 +88,16 @@ export const GAME_ITEM_ASSETS = {
     gameItem("mashutan", "マシュタン", IMAGE_ASSETS.mascotCandidates[1], "🐾"),
     gameItem("jett-senpai", "ジェットせんぱい", IMAGE_ASSETS.mascotCandidates[2], "🐾"),
   ],
-  choose: Object.values(CHARACTER_ASSETS).flatMap((itemCharacter) => [
-    gameItem(`${itemCharacter.id}-idle`, itemCharacter.name, itemCharacter.idle, "🕵️‍♀️"),
-    gameItem(`${itemCharacter.id}-success`, `よろこぶ ${itemCharacter.name}`, itemCharacter.success, "✨"),
-  ]),
+  choose: Object.values(CHARACTER_ASSETS).flatMap((itemCharacter) =>
+    Object.entries(itemCharacter.expressions).map(([expression, expressionImage]) =>
+      gameItem(
+        `${itemCharacter.id}-${expression}`,
+        `${EXPRESSION_LABELS[expression]} ${itemCharacter.name}`,
+        expressionImage,
+        "🕵️‍♀️",
+      ),
+    ),
+  ),
 };
 
 export const APP_CONFIG = {
@@ -178,6 +191,7 @@ export const GAME_CONFIGS = [
     cardIcon: "🔷",
     character: "🐶",
     shapes: GAME_ITEM_ASSETS.choose,
+    randomizeTarget: true,
     promptTemplate: "{label}を みつけよう",
     choiceCount: 6,
     targetCount: 2,

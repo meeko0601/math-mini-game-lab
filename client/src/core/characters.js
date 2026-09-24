@@ -8,6 +8,10 @@ export function characterPortrait(character, expression = "smile", className = "
   return visual(image, "🕵️‍♀️", className);
 }
 
+export function characterFullBody(character, className = "character-full-body") {
+  return visual(character?.idle, "🕵️‍♀️", className);
+}
+
 export function createCharacterPrompt(cast = [], text) {
   const [speaker, partner] = cast;
 
@@ -31,9 +35,8 @@ export function createHomeCast(characters = []) {
     className: "home-cast",
     ariaLabel: characters.map((character) => character.name).join("、"),
   }, characters.map((character, index) =>
-    characterPortrait(
+    characterFullBody(
       character,
-      "smile",
       `home-cast__portrait home-cast__portrait--${index + 1}`,
     ),
   ));

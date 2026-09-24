@@ -78,7 +78,9 @@ export function createMoveQuestion(config, random = Math.random) {
 }
 
 export function createChooseQuestion(config, random = Math.random) {
-  const target = pickRoundItem(config.shapes, config.roundIndex, random);
+  const target = config.randomizeTarget
+    ? pickRandom(config.shapes, random)
+    : pickRoundItem(config.shapes, config.roundIndex, random);
   const others = config.shapes.filter((shape) => shape.id !== target.id);
   const choices = [];
 

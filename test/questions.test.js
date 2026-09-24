@@ -54,22 +54,28 @@ test("文章テンプレートの値を置き換えられる", () => {
   assert.equal(formatTemplate("{count}こ はこぼう", { count: 4 }), "4こ はこぼう");
 });
 
-test("画像題材は問題ごとに循環し、みつける8種へ偏りがない", () => {
+test("画像題材は数える・運ぶで循環し、みつける表情はランダムに選ばれる", () => {
   assert.deepEqual(
     [GAME_ITEM_ASSETS.count.length, GAME_ITEM_ASSETS.move.length, GAME_ITEM_ASSETS.choose.length],
-    [3, 3, 8],
+    [3, 3, 16],
   );
 
   const countIds = Array.from({ length: 3 }, (_, roundIndex) =>
     createCountQuestion({ ...GAME_CONFIGS[0], roundIndex }, alwaysZero).itemId);
   const moveIds = Array.from({ length: 3 }, (_, roundIndex) =>
     createMoveQuestion({ ...GAME_CONFIGS[1], roundIndex }, alwaysZero).itemId);
-  const chooseTargets = Array.from({ length: 8 }, (_, roundIndex) =>
-    createChooseQuestion({ ...GAME_CONFIGS[2], roundIndex }, alwaysZero).target.id);
 
   assert.equal(new Set(countIds).size, 3);
   assert.equal(new Set(moveIds).size, 3);
-  assert.equal(new Set(chooseTargets).size, 8);
+  assert.equal(new Set(GAME_ITEM_ASSETS.choose.map((item) => item.id)).size, 16);
+  assert.equal(
+    GAME_ITEM_ASSETS.choose.every((item) => item.image.src.includes("/expressions/web/")),
+    true,
+  );
+
+  const firstTarget = createChooseQuestion(GAME_CONFIGS[2], alwaysZero).target.id;
+  const lastTarget = createChooseQuestion(GAME_CONFIGS[2], () => 0.999).target.id;
+  assert.notEqual(firstTarget, lastTarget);
 
   const choose = createChooseQuestion({ ...GAME_CONFIGS[2], roundIndex: 0 }, alwaysZero);
   const distractors = choose.choices.filter((choice) => choice.id !== choose.target.id);
@@ -118,6 +124,9 @@ test("画像素材は設定に集約され、3ゲームから差し替えられ�
   for (const character of Object.values(CHARACTER_ASSETS)) {
     assert.deepEqual(Object.keys(character.expressions).sort(), ["joy", "sad", "smile", "thinking"]);
   }
+
+  const charactersSource = readFileSync(resolve(publicRoot, "../src/core/characters.js"), "utf8");
+  assert.match(charactersSource, /createHomeCast[\s\S]*characterFullBody/);
 });
 
 test("PWA設定と全ゲーム画像がオフライン利用向けに揃っている", () => {
@@ -164,6 +173,8 @@ test("はこんでみようはiPad Safari向けの画像表示とタッチ代替
   assert.match(moveGame, /activePointerId/);
   assert.match(moveGame, /タップだけでも運べます/);
   assert.match(styles, /\.move-item\s*\{[\s\S]*?touch-action: none;/);
+  assert.match(styles, /\.move-item\s*\{[\s\S]*?padding: 0;/);
   assert.match(styles, /\.move-item__visual\s*\{[\s\S]*?background-size: contain;/);
+  assert.match(styles, /\.move-item__visual\s*\{[\s\S]*?background-position: center center;/);
   assert.match(styles, /-webkit-touch-callout: none;/);
 });
