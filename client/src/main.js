@@ -11,12 +11,14 @@ import { registerPwa } from "./core/pwa.js";
 import { mountCountGame } from "./games/countGame.js";
 import { mountMoveGame } from "./games/moveGame.js";
 import { mountChooseGame } from "./games/chooseGame.js";
+import { mountCaveGame } from './games/caveGame.js';
 
 const app = document.querySelector("#app");
 const gameMounts = {
   count: mountCountGame,
   move: mountMoveGame,
   choose: mountChooseGame,
+  cave: mountCaveGame,
 };
 
 let soundEnabled = APP_CONFIG.sound;
@@ -159,6 +161,7 @@ function renderGame(game) {
     stage,
     feedback,
   ]);
+  if (game.kind === 'cave') shell.classList.add('game-screen--cave');
 
   app.replaceChildren(shell);
   cleanupCurrentScreen = mountGame({

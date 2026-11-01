@@ -18,6 +18,7 @@ import {
   IMAGE_ASSETS,
   OFFLINE_ASSET_URLS,
 } from "../client/src/config/games.js";
+import { CAVE_ASSET_URLS } from '../client/src/config/cave.js';
 
 const alwaysZero = () => 0;
 
@@ -86,8 +87,10 @@ test("ゲームIDと種類は重複せず、必要な設定がある", () => {
   assert.equal(new Set(GAME_CONFIGS.map((game) => game.id)).size, GAME_CONFIGS.length);
   for (const game of GAME_CONFIGS) {
     assert.ok(game.title);
-    assert.ok(game.character);
-    assert.ok(game.successMessages.length > 0);
+    if (game.kind !== 'cave') {
+      assert.ok(game.character);
+      assert.ok(game.successMessages.length > 0);
+    }
     assert.ok(game.theme.accent);
   }
 });
@@ -114,8 +117,10 @@ test("画像素材は設定に集約され、3ゲームから差し替えられ�
 
   for (const game of GAME_CONFIGS) {
     assert.ok(game.images?.card?.src);
-    assert.ok(game.images?.prompt?.src);
-    assert.ok(game.images?.success?.src);
+    if (game.kind !== 'cave') {
+      assert.ok(game.images?.prompt?.src);
+      assert.ok(game.images?.success?.src);
+    }
     assert.equal(game.castCycle.length, 2);
     assert.equal(game.castCycle.every((cast) => cast.length === 2), true);
   }
@@ -146,7 +151,7 @@ test("PWA設定と全ゲーム画像がオフライン利用向けに揃って�
     assert.equal(existsSync(resolve(publicRoot, icon.src.replace(/^\.\//, ""))), true);
   }
 
-  assert.equal(OFFLINE_ASSET_URLS.length, 31);
+  assert.equal(OFFLINE_ASSET_URLS.length, 31 + CAVE_ASSET_URLS.length);
   for (const assetUrl of OFFLINE_ASSET_URLS) {
     assert.equal(existsSync(resolve(publicRoot, assetUrl.slice(1))), true);
   }

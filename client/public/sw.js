@@ -116,7 +116,24 @@ self.addEventListener("fetch", (event) => {
   event.respondWith((async () => {
     const cache = await caches.open(CACHE_NAME);
     const cachedResponse = await cache.match(request, { ignoreSearch: true, ignoreVary: true });
-    if (cachedResponse) return cachedResponse;
+    if (cachedResponse) {
+      // Safariの音声再生はRangeリクエストを使うため、キャッシュから部分応答する。
+      const range = request.headers.get('Range');
+      if (range && /\.(mp3|wav|m4a)$/i.test(requestUrl.pathname)) {
+        const bytes = await cachedResponse.arrayBuffer();
+        const match = /^bytes=(\d*)-(\d*)$/.exec(range);
+        if (!match || (!match[1] && !match[2])) return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${bytes.byteLength}` } });
+        const start = match[1] ? Number(match[1]) : Math.max(0, bytes.byteLength - Number(match[2]));
+        const end = match[1] && match[2] ? Math.min(Number(match[2]), bytes.byteLength - 1) : bytes.byteLength - 1;
+        if (start > end || start >= bytes.byteLength) return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${bytes.byteLength}` } });
+        const headers = new Headers(cachedResponse.headers);
+        headers.set('Content-Range', `bytes ${start}-${end}/${bytes.byteLength}`);
+        headers.set('Content-Length', String(end - start + 1));
+        headers.set('Accept-Ranges', 'bytes');
+        return new Response(bytes.slice(start, end + 1), { status: 206, headers });
+      }
+      return cachedResponse;
+    }
 
     const response = await fetch(request);
     if (response.ok) await cache.put(request, response.clone());

@@ -12,4 +12,9 @@
 
 ## ゲームモジュール契約
 
+洞窟ゲームは `games/caveGame.js` がDOM表示と音声・タイマーの破棄を担当します。
+`games/cave/` はManus引き継ぎ版の純粋な問題生成・状態遷移をJavaScriptへ変換したものです。
+素材・数の範囲は `config/cave.js`、配役とカードは `config/games.js`、文言は `games/cave/copy.js` に置きます。
+引き継ぎ版のReact/Tailwind UIは持ち込まず、このアプリのHTML/CSS/JavaScript構成を維持しています。
+
 ゲームは `mountXGame({ stage, feedback, config, nextRound, soundEnabled })` をexportし、破棄処理関数を返す。正解／再挑戦は `createFeedbackController` を再利用する。ゲーム固有の題材や数字を直書きせず、`config` から受け取る。

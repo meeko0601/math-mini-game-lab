@@ -1,0 +1,90 @@
+.game-screen--cave { padding-bottom: 12px; }
+.game-screen--cave .game-title strong { font-size: clamp(12px, 2.1vw, 20px); }
+.game-screen--cave .game-title { color: #fff4d6; }
+.game-screen--cave .game-stage { width: min(1160px,100%); padding: 0; margin-top: 12px; }
+.cave-game { position: relative; isolation: isolate; width: 100%; min-height: 650px; height: calc(100svh - 110px); max-height: 980px; overflow: hidden; border-radius: 28px; color: #fff4d6; background: #143028 var(--cave-bg) center / cover; box-shadow: 0 12px 36px #14281c44; font-family: inherit; }
+.cave-game::before { content: ''; position: absolute; inset: 0; background: linear-gradient(#091b2260, transparent 42%, #081d2460); z-index: -1; pointer-events: none; }
+.cave-game button { font: inherit; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.cave-progress { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; pointer-events: none; }
+.cave-progress span { border-radius: 50%; padding: 4px 16px; background: #142b28b0; opacity: .6; }
+.cave-progress .is-lit { opacity: 1; background: #ffe3a2; }
+.cave-content { position: relative; height: 100%; padding: 52px 14px 12px; }
+.cave-prompt { position: relative; z-index: 3; display: flex; align-items: center; justify-content: center; gap: 6px; pointer-events: none; }
+.cave-speaker { width: clamp(64px, 11vw, 104px); height: clamp(72px, 12vw, 112px); object-fit: contain; filter: drop-shadow(0 3px 4px #0004); }
+.cave-bubble { display: flex; align-items: center; gap: 8px; max-width: 600px; padding: 14px 18px; border-radius: 24px; background: #fff8e9f5; color: #4f3b22; border: 3px solid #ecd18f; box-shadow: 0 5px 0 #624b3440; }
+.cave-bubble h2 { margin: 0; font-size: clamp(17px, 2.8vw, 28px); line-height: 1.45; }
+.cave-prompt-target { width: 46px; height: 56px; object-fit: contain; }
+.cave-title, .cave-ending { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-around; text-align: center; gap: 12px; }
+.cave-title p { margin: 0; background: #143028bf; padding: 8px 18px; border-radius: 20px; }
+.cave-title h1 { margin: 0; font-size: clamp(27px, 4.5vw, 48px); line-height: 1.5; text-shadow: 0 3px 0 #624114, 0 5px 15px #000; }
+.cave-title h1 span { display: block; }
+.cave-tools { display: flex; gap: 20px; }
+.cave-tools img { width: 68px; height: 68px; object-fit: contain; }
+.cave-title .cave-tools { position: absolute; top: 40%; left: 50%; transform: translateX(-50%); pointer-events: none; }
+.cave-title .cave-tools img { width: 48px; height: 48px; }
+.cave-title { gap: 6px; }
+.cave-title h1 { font-size: clamp(27px,4vw,40px); line-height: 1.3; }
+.cave-cast { display: flex; justify-content: center; gap: 14px; }
+.cave-cast figure { margin: 0; }
+.cave-cast__image { width: 120px; height: 120px; object-fit: contain; }
+.cave-cast figcaption { font-size: 14px; text-shadow: 0 2px 4px #000; }
+.cave-cast--large .cave-cast__image { width: clamp(155px, 28vw, 260px); height: clamp(155px, 28vw, 260px); }
+.cave-action { min-height: 68px; min-width: 180px; padding: 12px 26px; background: linear-gradient(#ffe9a8,#f1bf56); color: #5d3c13; border: 3px solid #fff4cb; border-radius: 24px; font-weight: 900 !important; font-size: 24px !important; box-shadow: 0 6px 0 #79582e; }
+.cave-entry { position: absolute; bottom: 8%; inset-inline: 0; text-align: center; }
+.cave-count-field { position: absolute; top: 29%; left: 13%; right: 13%; bottom: 43%; display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); grid-template-rows: repeat(2,minmax(0,1fr)); align-items: center; justify-items: center; gap: 8px 2px; padding: 8px; background: #fff4c818; border: 2px solid #f5d48b66; border-radius: 24px; }
+.cave-kobito { display: grid; place-items: center; width: 100%; height: 100%; min-height: 0; min-width: 0; overflow: hidden; padding: 0; border: 0; background: transparent; }
+.cave-kobito__image { width: 100%; height: 100%; min-height: 0; max-height: 100%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 3px 4px #0005); }
+.cave-kobito__image.is-reacting { animation: cave-hop .5s ease; }
+.cave-decor { position: absolute; left: 3%; right: 3%; top: 58%; height: 64px; display: flex; justify-content: space-between; pointer-events: none; }
+.cave-decor .cave-kobito { width: 64px; height: 64px; pointer-events: auto; }
+.cave-answers { position: absolute; bottom: 7%; width: min(94%, 600px); left: 50%; transform: translateX(-50%); display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 10px; }
+.cave-number { min-width: 0; min-height: 64px; padding: 4px; border-radius: 19px; border: 3px solid #fff3c2; background: #ffdf95; color: #503d20; font-size: 32px !important; font-weight: 900 !important; box-shadow: 0 4px 0 #896b36; }
+.cave-retry { position: absolute; bottom: 0; inset-inline: 0; text-align: center; font-weight: 700; font-size: 15px; min-height: 24px; margin: 8px; text-shadow: 0 2px 4px #000; pointer-events: none; }
+.cave-clear { position: absolute; bottom: 7%; inset-inline: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.cave-clear p { font-size: 26px; font-weight: 900; margin: 0; background: #15372dd9; border-radius: 20px; padding: 10px 22px; }
+.cave-counter { position: absolute; top: 26%; left: 50%; transform: translateX(-50%); z-index: 2; pointer-events: none; text-align: center; }
+.cave-counter strong { font-size: clamp(42px,7vw,64px); display: inline-block; background: #16382cdd; border: 2px solid #ffe1a0; padding: 0 22px; border-radius: 20px; }
+.cave-beads { display: grid; grid-template-columns: repeat(10,16px); gap: 5px; margin-top: 8px; padding: 8px; border-radius: 14px; background: #16382cdd; }
+.cave-beads span { width: 16px; height: 16px; border: 2px solid #ffd983; border-radius: 50%; }
+.cave-beads .is-collected { background: #ffe182; box-shadow: 0 0 6px #ffe182; }
+.cave-sparkles { position: absolute; top: 44%; bottom: 14%; left: 5%; right: 5%; }
+.cave-sparkle { position: absolute; transform: translate(-50%,-50%); width: 72px; height: 72px; border: 0; background: transparent; padding: 0; }
+.cave-sparkle:active { transform: translate(-50%,-50%); }
+.cave-sparkle img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 0 8px #ffec8f); }
+.cave-game[data-scene^=stage2] .cave-decor { top: auto; bottom: 1%; }
+.cave-game[data-scene^=stage3] .cave-decor { top: 37%; }
+.cave-chest { position: absolute; width: clamp(150px,22vw,205px); top: 28%; left: 50%; transform: translateX(-50%); }
+.cave-chest img { width: 100%; display: block; }
+.cave-chest strong { position: absolute; left: 62%; top: 53%; transform: translate(-50%,-50%); background: #472a15ed; border: 3px solid #ffdf92; border-radius: 50%; min-width: 58px; min-height: 58px; display: grid; place-items: center; font-size: 30px; }
+.cave-jewels { position: absolute; left: 50%; transform: translateX(-50%); width: min(94%,850px); top: 50%; bottom: 5%; }
+.cave-jewel-mover { position: absolute; top: 0; left: 0; will-change: transform; }
+.cave-jewel { position: relative; width: 100%; min-width: 0; height: 100%; border: 0; border-radius: 18px; padding: 0; background: #fff5d62b; }
+.cave-jewel img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.cave-jewel strong { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); color: #352142; background: #fff9efed; border: 2px solid #e5b2eb; border-radius: 12px; min-width: 42px; padding: 2px 4px; font-size: 27px; }
+.cave-jewel--dimmed { opacity: .4; }
+.cave-jewel--winner { z-index: 5; filter: drop-shadow(0 0 15px #ffdf65); }
+.cave-jewel.is-flying { animation: cave-fly var(--flight-duration) ease-in forwards; }
+.cave-open-chest { width: clamp(180px,30vw,280px); max-height: 28%; object-fit: contain; }
+.cave-shake { animation: cave-shake .3s ease; }
+@keyframes cave-hop { 50% { transform: translateY(-12px) rotate(5deg); } }
+@keyframes cave-shake { 25%,75% { transform: translateX(-4px); } 50% { transform: translateX(4px); } }
+@keyframes cave-fly { 15% { transform: scale(1.12); } 100% { transform: translate(var(--fly-x),var(--fly-y)) scale(.1); opacity: 0; } }
+@media (max-aspect-ratio: 1/1) { .cave-game { background-image: var(--cave-portrait-bg); } }
+@media (max-width: 500px) {
+  .game-screen--cave { padding: 8px; }
+  .cave-game { border-radius: 20px; min-height: 650px; }
+  .cave-content { padding-inline: 5px; }
+  .cave-speaker { width: 58px; height: 76px; }
+  .cave-bubble { padding: 9px 8px; gap: 3px; border-width: 2px; }
+  .cave-bubble h2 { font-size: 17px; }
+  .cave-prompt-target { width: 28px; height: 40px; }
+  .cave-count-field { left: 8%; right: 8%; gap: 8px 0; }
+  .cave-decor .cave-kobito { width: 52px; }
+  .cave-answers { gap: 8px; }
+  .cave-beads { gap: 4px; }
+  .cave-jewel strong { font-size: 24px; min-width: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cave-game *, .cave-game *::before { animation: none !important; transition: none !important; }
+  .cave-jewel.is-flying { transform: translate(var(--fly-x),var(--fly-y)) scale(.1); opacity: 0; }
+}

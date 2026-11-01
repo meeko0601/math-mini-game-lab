@@ -2,6 +2,7 @@
  * まず変更する場所。
  * 名前・絵文字・画像・数の範囲・言葉・色は、ゲームロジックを触らずに変更できます。
  */
+import { CAVE_ASSETS, CAVE_ASSET_URLS, CAVE_CONFIG, CAVE_EXPLORERS } from './cave.js';
 const image = (src, alt) => ({ src, alt });
 
 const character = ({ id, name, fileName }) => ({
@@ -60,7 +61,7 @@ function collectImageUrls(value, urls = new Set()) {
 }
 
 /** Service Workerへ渡す、ゲームプレイに必要なローカル画像一覧です。 */
-export const OFFLINE_ASSET_URLS = [...collectImageUrls(IMAGE_ASSETS)];
+export const OFFLINE_ASSET_URLS = [...collectImageUrls(IMAGE_ASSETS), ...CAVE_ASSET_URLS];
 
 const gameItem = (id, label, itemImage, icon = "") => ({
   id,
@@ -215,6 +216,14 @@ export const GAME_CONFIGS = [
       soft: "#e6dcff",
       ink: "#392f51",
     },
+  },
+  {
+    id: 'cave', kind: 'cave', title: 'こびとどうくつの きらきらさがし',
+    shortDescription: 'かぞえて・あつめて・たからさがし', cardIcon: '💎',
+    rules: CAVE_CONFIG, assets: CAVE_ASSETS, explorers: CAVE_EXPLORERS,
+    castCycle: [[CHARACTER_ASSETS.answer, CHARACTER_ASSETS.arcana], [CHARACTER_ASSETS.eclair, CHARACTER_ASSETS.mystique]],
+    images: { card: image(CAVE_ASSETS.gem, 'きらきらの ほうせき') },
+    theme: { background: '#143028', surface: '#fff4d6', accent: '#d4a543', accentDark: '#674711', soft: '#f8e8b8', ink: '#403018' },
   },
 ];
 
