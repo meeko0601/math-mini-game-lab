@@ -100,7 +100,7 @@ function renderHome() {
               el("strong", { text: APP_CONFIG.title }),
               el("small", { text: APP_CONFIG.titleBadge }),
             ]),
-            el("p", { className: "brand-mark__description", text: "たのしく さんすう をれんしゅうしよう！" }),
+            el("p", { className: "brand-mark__description", text: "たのしく さんすう をれんしゅうしよう！♪" }),
           ]),
         ]),
         soundButton(),
