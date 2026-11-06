@@ -95,9 +95,12 @@ function renderHome() {
       el("div", { className: "home-topbar" }, [
         el("div", { className: "brand-mark", ariaLabel: "かりの タイトル" }, [
           el("span", { className: "brand-mark__sun", text: APP_CONFIG.homeCharacter }),
-          el("span", { className: "brand-mark__text" }, [
-            el("strong", { text: APP_CONFIG.title }),
-            el("small", { text: APP_CONFIG.titleBadge }),
+          el("div", {}, [
+            el("span", { className: "brand-mark__text" }, [
+              el("strong", { text: APP_CONFIG.title }),
+              el("small", { text: APP_CONFIG.titleBadge }),
+            ]),
+            el("p", { className: "brand-mark__description", text: "たのしく さんすう をれんしゅうしよう！" }),
           ]),
         ]),
         soundButton(),
