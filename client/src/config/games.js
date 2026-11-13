@@ -26,7 +26,7 @@ export const CHARACTER_ASSETS = {
   answer: character({ id: "answer", name: "アンサー", fileName: "cure_answer" }),
   arcana: character({ id: "arcana", name: "アルカナ", fileName: "cure_arcana_shadow" }),
   eclair: character({ id: "eclair", name: "エクレール", fileName: "cure_eclair" }),
-  mystique: character({ id: "mystique", name: "ミスティーク", fileName: "cure_mystique" }),
+  mystique: character({ id: "mystique", name: "ミスティック", fileName: "cure_mystique" }),
 };
 
 /**
@@ -216,6 +216,24 @@ export const GAME_CONFIGS = [
       soft: "#e6dcff",
       ink: "#392f51",
     },
+  },
+  {
+    id: "pattern", kind: "pattern", title: "つぎは だれかな？",
+    shortDescription: "ならびの ひみつを みつけよう", cardIcon: "🔎", character: "🕵️‍♀️",
+    items: [
+      ...Object.values(CHARACTER_ASSETS).map((c) => gameItem(c.id, c.name, c.expressions.smile)),
+      ...GAME_ITEM_ASSETS.move,
+    ],
+    patterns: [[0, 1], [0, 1], [0, 0, 1], [0, 1, 2]],
+    prompt: "つぎに くるのは だれかな？",
+    hint: "おなじ ならびが くりかえすよ。？に はいる えを タッチ！",
+    hintLabel: "ヒントを みる", groupLabel: "ひとまとまり",
+    answerLabel: "？に はいる えを えらぼう",
+    successMessages: ["ならびの ひみつ、みつけたね！", "ぴったり！ めいたんてい！"],
+    retryMessage: "はじめから じゅんばんに みてみよう",
+    castCycle: [[CHARACTER_ASSETS.answer, CHARACTER_ASSETS.arcana], [CHARACTER_ASSETS.eclair, CHARACTER_ASSETS.mystique]],
+    images: { card: IMAGE_ASSETS.mascotCandidates[0], prompt: IMAGE_ASSETS.effects.magnifier, success: IMAGE_ASSETS.effects.success },
+    theme: { background: "#edf9f5", surface: "#fbfffd", accent: "#379b85", accentDark: "#216a59", soft: "#ceeee3", ink: "#28483e" },
   },
   {
     id: 'cave', kind: 'cave', title: 'こびとどうくつの きらきらさがし',
