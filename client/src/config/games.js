@@ -26,7 +26,7 @@ export const CHARACTER_ASSETS = {
   answer: character({ id: "answer", name: "アンサー", fileName: "cure_answer" }),
   arcana: character({ id: "arcana", name: "アルカナ", fileName: "cure_arcana_shadow" }),
   eclair: character({ id: "eclair", name: "エクレール", fileName: "cure_eclair" }),
-  mystique: character({ id: "mystique", name: "ミスティーク", fileName: "cure_mystique" }),
+  mystique: character({ id: "mystique", name: "ミスティック", fileName: "cure_mystique" }),
 };
 
 /**
