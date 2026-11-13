@@ -1053,3 +1053,69 @@ button:active {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Pattern detective: keep the reading order left to right, including on phones. */
+.pattern-sequence {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(3px, 1vw, 12px);
+  width: 100%;
+}
+.pattern-tile {
+  display: grid;
+  place-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 108px;
+  aspect-ratio: 1;
+  border: 2px solid white;
+  border-radius: 16px;
+  background: var(--game-surface);
+  box-shadow: 0 4px 12px #28483e10;
+}
+.pattern-image { width: 92%; height: 92%; object-fit: contain; }
+.pattern-tile--missing {
+  border: 3px dashed var(--game-accent);
+  color: var(--game-accent-dark);
+  font-size: clamp(24px, 5vw, 48px);
+  font-weight: 900;
+}
+.pattern-tile--solved { border-style: solid; background: var(--game-soft); }
+.pattern-sequence--hint [data-group="0"] { border-color: var(--game-accent); background: var(--game-soft); }
+.pattern-sequence--hint [data-group="1"] { border-color: var(--game-accent); background: var(--game-soft); }
+.pattern-sequence--hint [data-group="1"]:not([data-group="1"] + [data-group="1"]) { margin-left: clamp(5px, 2vw, 20px); }
+.pattern-instruction { margin: 0; text-align: center; font-weight: 700; line-height: 1.8; }
+.pattern-hint {
+  min-height: 48px;
+  padding: 10px 22px;
+  border: 2px solid var(--game-accent);
+  border-radius: 24px;
+  background: white;
+  color: var(--game-accent-dark);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pattern-answers { display: flex; justify-content: center; gap: 12px; width: 100%; padding-bottom: 140px; }
+.pattern-choice {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  flex: 1 1 0;
+  max-width: 180px;
+  min-width: 0;
+  min-height: 108px;
+  padding: 8px;
+  border: 3px solid var(--game-soft);
+  border-radius: 24px;
+  background: white;
+  color: var(--game-ink);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.pattern-choice__image { width: 100%; height: clamp(70px, 13vw, 130px); object-fit: contain; }
+.pattern-choice span { font-size: clamp(12px, 2.5vw, 17px); overflow-wrap: anywhere; }
+.pattern-choice:disabled { cursor: default; }
+.pattern-choice:focus-visible, .pattern-hint:focus-visible { outline: 4px solid var(--game-accent-dark); outline-offset: 3px; }

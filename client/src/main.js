@@ -13,8 +13,11 @@ import { mountMoveGame } from "./games/moveGame.js";
 import { mountChooseGame } from "./games/chooseGame.js";
 import { mountCaveGame } from './games/caveGame.js';
 
+import { mountPatternGame } from "./games/patternGame.js";
+
 const app = document.querySelector("#app");
 const gameMounts = {
+  pattern: mountPatternGame,
   count: mountCountGame,
   move: mountMoveGame,
   choose: mountChooseGame,
