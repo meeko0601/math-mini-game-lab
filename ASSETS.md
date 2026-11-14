@@ -20,3 +20,13 @@
 ## 将来変更するとき
 
 子ども本人と担当や題材が決まってから、`IMAGE_ASSETS` と各ゲームの `images` だけを変更してください。画像パスをゲームロジックへ直接書かないでください。追加素材は、自作または利用許諾を確認できるものを使ってください。
+
+## ホーム画面・ブラウザ用アイコン
+
+承認済みの4人の顔と金色のルーペのデザインを、`public/assets/icons/detective-*` に配置しています。
+- Apple用：180×180px（不透明PNG）。`index.html`で明示し、標準パス`public/apple-touch-icon.png`にも配置。
+- favicon：16・32pxのPNGと16・32・48pxを含むICO。
+- manifest：192・512pxのPNGと、中央に余白を取った512pxのmaskable版。
+
+プレビューURLの`/assets/icons/detective-pwa-512.png`を開くと、スマートフォンでも画像単体を確認できます。
+既に追加済みのホーム画面アイコンはiOS側に残ることがあるため、変更が見えない場合は公開後にSafariから追加し直してください。
